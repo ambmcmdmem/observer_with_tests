@@ -1,13 +1,9 @@
-const Observer = require('./modules/observer');
-const observer = new Observer();
-const testArray = [];
+const observer = require('./modules/observer');
 
-observer.subscribe('output', () => {
-  testArray.push(1);
-  testArray.push(2);
-});
+observer.subscribe('output', () => 'test');
+observer.subscribe('output2', (output) => output, 'test2');
 
 test('Observer test.', () => {
-  observer.publish('output');
-  expect(testArray).toEqual([1, 2]);
+  expect(observer.publish('output')).toBe('test');
+  expect(observer.publish('output2')).toBe('test2');
 });
