@@ -2,12 +2,12 @@ class Observer {
   constructor() {
     this.callback = {};
   }
-  subscribe(eventName, callback, ...callbackArg) {
-    this.callback[eventName] = callback(...callbackArg);
+  subscribe(eventName, callback) {
+    this.callback[eventName] = callback;
   }
   publish(eventName) {
-    return this.callback[eventName];
+    this.callback[eventName]();
   }
 }
 
-module.exports = new Observer();
+module.exports = Observer;
