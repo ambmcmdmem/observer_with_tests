@@ -1,11 +1,16 @@
-const Observer = require('./modules/observer');
+import Observer from './modules/observer';
+
 const toBeTested = new Observer();
 const forConfirmationOfInteraction = new Observer();
 
 const callbackInvocationToken = [];
 toBeTested.subscribe('push', () => {
   callbackInvocationToken.push(1);
-  callbackInvocationToken.push('test');
+  callbackInvocationToken.push('first push');
+});
+toBeTested.subscribe('push', () => {
+  callbackInvocationToken.push(1000);
+  callbackInvocationToken.push('second push');
 });
 forConfirmationOfInteraction.subscribe('push', () => {
   callbackInvocationToken.push(100);
@@ -13,9 +18,20 @@ forConfirmationOfInteraction.subscribe('push', () => {
 
 test('Observer test.', () => {
   toBeTested.publish('push');
-  expect(callbackInvocationToken).toStrictEqual([1, 'test']);
+  expect(callbackInvocationToken).toStrictEqual([
+    1,
+    'first push',
+    1000,
+    'second push',
+  ]);
   forConfirmationOfInteraction.publish('push');
-  expect(callbackInvocationToken).toStrictEqual([1, 'test', 100]);
+  expect(callbackInvocationToken).toStrictEqual([
+    1,
+    'first push',
+    1000,
+    'second push',
+    100,
+  ]);
 
   expect(() => {
     toBeTested.subscribe();
@@ -31,8 +47,12 @@ test('Observer test.', () => {
   }).toThrow(new Error('コールバック関数が関数ではありません。'));
   expect(() => {
     toBeTested.publish();
-  }).toThrow(new TypeError('this.callback[eventName] is not a function'));
+  }).toThrow(
+    new TypeError("Cannot read properties of undefined (reading 'map')")
+  );
   expect(() => {
     toBeTested.publish('eventUnregistered');
-  }).toThrow(new TypeError('this.callback[eventName] is not a function'));
+  }).toThrow(
+    new TypeError("Cannot read properties of undefined (reading 'map')")
+  );
 });

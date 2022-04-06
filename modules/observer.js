@@ -1,4 +1,4 @@
-class Observer {
+export default class Observer {
   constructor() {
     this.callback = {};
     this.validationAndErrors = [
@@ -27,11 +27,11 @@ class Observer {
 
     if (validationAndError) throw validationAndError.error;
 
-    this.callback[eventName] = callback;
+    this.callback[eventName] = this.callback[eventName]
+      ? [...this.callback[eventName], callback]
+      : [callback];
   }
   publish(eventName) {
-    this.callback[eventName]();
+    this.callback[eventName].map((callback) => callback());
   }
 }
-
-module.exports = Observer;
