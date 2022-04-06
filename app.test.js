@@ -19,13 +19,13 @@ test('Observer test.', () => {
 
   expect(() => {
     toBeTested.subscribe();
-  }).toThrow(new Error('イベント名が入力されていません。'));
+  }).toThrow(new Error('イベント名の型は文字列としてください。'));
   expect(() => {
     toBeTested.subscribe(1000);
   }).toThrow(new Error('イベント名の型は文字列としてください。'));
   expect(() => {
     toBeTested.subscribe('emptyCallbackArgument');
-  }).toThrow(new Error('コールバック関数が入力されていません。'));
+  }).toThrow(new Error('コールバック関数が関数ではありません。'));
   expect(() => {
     toBeTested.subscribe('illegalCallbackArgument', 0);
   }).toThrow(new Error('コールバック関数が関数ではありません。'));
