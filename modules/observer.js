@@ -1,31 +1,31 @@
 class Observer {
   constructor() {
     this.callback = {};
-  }
-  subscribe(eventName, callback) {
-    const validityAndErrors = [
+    this.validationAndErrors = [
       {
-        validity: typeof eventName === 'undefined',
+        validation: ({ eventName }) => eventName !== undefined,
         error: new Error('イベント名が入力されていません。'),
       },
       {
-        validity: typeof eventName !== 'string',
+        validation: ({ eventName }) => typeof eventName === 'string',
         error: new Error('イベント名の型は文字列としてください。'),
       },
       {
-        validity: typeof callback === 'undefined',
+        validation: ({ callback }) => callback !== undefined,
         error: new Error('コールバック関数が入力されていません。'),
       },
       {
-        validity: typeof callback !== 'function',
+        validation: ({ callback }) => typeof callback === 'function',
         error: new Error('コールバック関数が関数ではありません。'),
       },
     ];
+  }
+  subscribe(eventName, callback) {
+    const validationAndError = this.validationAndErrors.find(
+      ({ validation }) => !validation({ eventName, callback })
+    );
 
-    if (validityAndErrors.some((validityAndError) => validityAndError.validity))
-      throw validityAndErrors.find(
-        (validityAndError) => validityAndError.validity
-      ).error;
+    if (validationAndError) throw validationAndError.error;
 
     this.callback[eventName] = callback;
   }
