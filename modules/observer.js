@@ -32,6 +32,6 @@ export default class Observer {
       : [callback];
   }
   publish(eventName) {
-    this.callback[eventName].map((callback) => callback());
+    this.callback[eventName].forEach((callback) => callback());
   }
 }

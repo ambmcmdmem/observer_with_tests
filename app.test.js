@@ -48,11 +48,11 @@ test('Observer test.', () => {
   expect(() => {
     toBeTested.publish();
   }).toThrow(
-    new TypeError("Cannot read properties of undefined (reading 'map')")
+    new TypeError("Cannot read properties of undefined (reading 'forEach')")
   );
   expect(() => {
     toBeTested.publish('eventUnregistered');
   }).toThrow(
-    new TypeError("Cannot read properties of undefined (reading 'map')")
+    new TypeError("Cannot read properties of undefined (reading 'forEach')")
   );
 });
